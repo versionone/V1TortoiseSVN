@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using VersionOne.SDK.ObjectModel;
 
 namespace V1TortoiseSVN

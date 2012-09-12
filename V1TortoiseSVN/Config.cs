@@ -8,9 +8,9 @@ namespace V1TortoiseSVN
 {
 	public class Config
 	{
-		private static readonly string ConfigFilePath = "config.xml";
+	    private const string ConfigFilePath = "config.xml";
 
-		public string ApplicationPath
+	    public string ApplicationPath
 		{
 			get { return Read<string>("ApplicationPath"); }
 			set { Set("ApplicationPath", value); }
@@ -80,18 +80,11 @@ namespace V1TortoiseSVN
 
 		private XmlNode EnsureNode(string name)
 		{
-			XmlNode node = Doc.DocumentElement.SelectSingleNode(name);
-			if (node == null)
-				node = Doc.DocumentElement.AppendChild(Doc.CreateElement(name));
-			return node;
+			XmlNode node = Doc.DocumentElement.SelectSingleNode(name) ?? Doc.DocumentElement.AppendChild(Doc.CreateElement(name));
+		    return node;
 		}
 
-		private T Read<T>(string name)
-		{
-			return Read(name, default(T));
-		}
-
-		private T Read<T>(string name, T def)
+	    private T Read<T>(string name, T def = default(T))
 		{
 			string text = EnsureNode(name).InnerText;
 			if (string.IsNullOrEmpty(text))
@@ -136,29 +129,24 @@ namespace V1TortoiseSVN
 
 			private static XmlAttribute EnsureAttribute(XmlNode node, string name)
 			{
-				XmlAttribute attrib = node.Attributes[name];
-				if (attrib == null)
-					attrib = node.Attributes.Append(node.OwnerDocument.CreateAttribute(name));
-				return attrib;
+				XmlAttribute attrib = node.Attributes[name] ?? node.Attributes.Append(node.OwnerDocument.CreateAttribute(name));
+			    return attrib;
 			}
 
 			private static XmlNode EnsureElement(XmlNode parent, string name)
 			{
-				XmlNode node = parent.SelectSingleNode(name);
-				if (node == null)
-					node = parent.AppendChild(parent.OwnerDocument.CreateElement(name));
-				return node;
+				XmlNode node = parent.SelectSingleNode(name) ?? parent.AppendChild(parent.OwnerDocument.CreateElement(name));
+			    return node;
 			}
 
 			private static XmlNode EnsureCData(XmlNode parent)
 			{
-				if (parent.ChildNodes.Count == 0)
+			    if (parent.ChildNodes.Count == 0)
 					return parent.AppendChild(parent.OwnerDocument.CreateCDataSection(string.Empty));
-				else
-					return parent.ChildNodes[0];
+			    return parent.ChildNodes[0];
 			}
 
-			private void ParseNode()
+		    private void ParseNode()
 			{
 				XmlAttribute attrib = EnsureAttribute(_node, "Count");
 				int count = 0;

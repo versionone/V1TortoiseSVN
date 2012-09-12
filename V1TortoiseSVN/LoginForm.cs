@@ -6,7 +6,7 @@ namespace V1TortoiseSVN
 {
 	public partial class LoginForm : Form
 	{
-		Config _config = new Config();
+	    readonly Config _config = new Config();
 		public LoginForm()
 		{
 			InitializeComponent();
@@ -24,22 +24,19 @@ namespace V1TortoiseSVN
 			cbSavePassword.Checked = _config.RememberPassword;
 		}
 
-		private void buttonLogin_Click(object sender, EventArgs e)
+		private void ButtonLoginClick(object sender, EventArgs e)
 		{
 			try
 			{
 				Hide();
-				V1Instance v1 = new V1Instance(textBoxApplicationURL.Text, textBoxUsername.Text, textBoxPassword.Text, cbIntegratedSecurity.Checked);
+				var v1 = new V1Instance(textBoxApplicationURL.Text, textBoxUsername.Text, textBoxPassword.Text, cbIntegratedSecurity.Checked);
 				v1.Validate();
 
 				_config.ApplicationPath = textBoxApplicationURL.Text;
 			    _config.UseWindowsIntegrated = cbIntegratedSecurity.Checked;
 				_config.Username = textBoxUsername.Text;
 
-				if (cbSavePassword.Checked)
-					_config.Password = textBoxPassword.Text;
-				else
-					_config.Password = null;
+				_config.Password = cbSavePassword.Checked ? textBoxPassword.Text : null;
 				_config.RememberPassword = cbSavePassword.Checked;
 
 				if ( LoginSuccesfull != null )

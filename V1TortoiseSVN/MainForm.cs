@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using VersionOne.SDK.ObjectModel;
@@ -17,16 +16,16 @@ namespace V1TortoiseSVN
 		}
 
 		private Thread _monitoringThread;
-		private bool _mouseDown = false;
-		private bool _dragging = false;
-		private ManualResetEvent stopEvent = new ManualResetEvent(false);
+		private bool _mouseDown;
+		private bool _dragging;
+		private readonly ManualResetEvent stopEvent = new ManualResetEvent(false);
 		private const string DefaultTitle = "V1 TortoiseSVN";
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			HideToTray();
 			trayIcon.Text = "Authenticating...";
-			LoginForm login = new LoginForm();
+			var login = new LoginForm();
 			login.LoginSuccesfull += login_LoginSuccesfull;
 
 			// Kind of a weak way to do it, but if we cancel out of the login dialog, exit
@@ -113,7 +112,7 @@ namespace V1TortoiseSVN
 			{
 				string primaryWorkitemDisplay = string.Format("{0} ({1})", primaryWorkitem.Name, primaryWorkitem.DisplayID);
 				
-				TreeNode primaryWorkitemNode = new TreeNode(primaryWorkitemDisplay);
+				var primaryWorkitemNode = new TreeNode(primaryWorkitemDisplay);
 				SetIcon(primaryWorkitemNode, primaryWorkitem);
 				primaryWorkitemNode.Tag = primaryWorkitem;
 				treeViewWorkitems.Nodes.Add(primaryWorkitemNode);
@@ -122,7 +121,7 @@ namespace V1TortoiseSVN
 				{
 					string taskDisplay = string.Format("{0} ({1})", task.Name, task.DisplayID);
 					
-					TreeNode taskNode = new TreeNode(taskDisplay);
+					var taskNode = new TreeNode(taskDisplay);
 					SetIcon(taskNode, task);
 					taskNode.Tag = task;
 					primaryWorkitemNode.Nodes.Add(taskNode);
@@ -158,11 +157,8 @@ namespace V1TortoiseSVN
 		{
 			if(InvokeRequired)
 			{
-				Invoke(new InvokeMethod(delegate
-				                        	{
-												PopulateTree(e.Workitems);
-				                        	}
-				       	));
+				Invoke(new InvokeMethod(() => PopulateTree(e.Workitems)
+				           ));
 			}
 			else
 				PopulateTree(e.Workitems);
@@ -207,11 +203,9 @@ namespace V1TortoiseSVN
 
 		private void BeginWindowMonitoring()
 		{
-			_monitoringThread = new Thread(MonitorWindows);
-			_monitoringThread.Name = "V1SVN Commit Window Watcher";
-			_monitoringThread.IsBackground = true;
-			_monitoringThread.Priority = ThreadPriority.Lowest;
-			_monitoringThread.Start();
+			_monitoringThread = new Thread(MonitorWindows)
+			    {Name = "V1SVN Commit Window Watcher", IsBackground = true, Priority = ThreadPriority.Lowest};
+		    _monitoringThread.Start();
 		}
 
 		private enum TortWindowHandleState
@@ -231,7 +225,7 @@ namespace V1TortoiseSVN
 				if (stopEvent.WaitOne(350, false))
 					return;
 
-				TortWindowHandleState state = TortWindowHandleState.DontHave;
+				var state = TortWindowHandleState.DontHave;
 
 				if (_commitWindowHandle == IntPtr.Zero)
 				{
@@ -258,10 +252,7 @@ namespace V1TortoiseSVN
 					Win32.RECT rect;
 					Win32.GetWindowRect(_commitWindowHandle, out rect);
 
-					Invoke(new MethodInvoker(delegate
-												{
-													FollowTortoise(rect);
-												}));
+					Invoke(new MethodInvoker(() => FollowTortoise(rect)));
 				}
 				else if (state == TortWindowHandleState.Lost)
 					Invoke(new MethodInvoker(HideWindow));
@@ -277,7 +268,7 @@ namespace V1TortoiseSVN
 		{
 			if ((rect.Top != Top) || (rect.Left != Left) || ((rect.Bottom - rect.Top) != Height))
 			{
-				Win32.SetWindowPos(this.Handle, _commitWindowHandle, rect.Right, rect.Top, Width, rect.Bottom - rect.Top, (uint)WindowsMessages.SWP_SHOWWINDOW);
+				Win32.SetWindowPos(Handle, _commitWindowHandle, rect.Right, rect.Top, Width, rect.Bottom - rect.Top, (uint)WindowsMessages.SWP_SHOWWINDOW);
 			}
 			if (!Visible)
 				RestoreFromTray();
@@ -428,7 +419,7 @@ namespace V1TortoiseSVN
 
 		protected override void WndProc(ref Message message)
 		{
-			WindowsMessages messageID = (WindowsMessages)message.Msg;
+			var messageID = (WindowsMessages)message.Msg;
 
 			base.WndProc(ref message);
 		}
