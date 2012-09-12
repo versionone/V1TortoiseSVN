@@ -6,7 +6,8 @@
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-[assembly: AssemblyTitle("VersionOne SDK TortoiseSVN Sample")]
+[assembly: AssemblyProduct("V1TortoiseSVN")]
+[assembly: AssemblyTitle("VersionOne SDK TortoiseSVN")]
 [assembly: AssemblyCompany("VersionOne, Inc.")]
 [assembly: AssemblyCopyright("Copyright 2012, VersionOne, Inc. Licensed under modified BSD.")]
 [assembly: AssemblyVersion("1.0")]
