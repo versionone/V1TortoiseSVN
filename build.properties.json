@@ -1,9 +1,0 @@
-{
-    "solution": "V1TortoiseSVN.sln",    
-    "nugetSources": "http://packages.nuget.org/api/v2/;http://www.myget.org/F/versionone/api/v2/",
-    "projectsToZip":"V1TortoiseSVN",
-    "configuration": "Release",
-    "platform": "Any CPU",    
-    "major": "1",
-    "minor": "0"
-}
