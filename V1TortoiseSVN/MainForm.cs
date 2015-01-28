@@ -46,11 +46,11 @@ namespace V1TortoiseSVN
 			if (InvokeRequired)
 			{
 				Invoke(new InvokeMethod(delegate
-											{
-												trayIcon.Text = DefaultTitle;
-												PopulateWorkitems();
-											}
-						));
+				    {
+					    trayIcon.Text = DefaultTitle;
+						PopulateWorkitems();
+					}
+				));
 			}
 			else
 				PopulateWorkitems();

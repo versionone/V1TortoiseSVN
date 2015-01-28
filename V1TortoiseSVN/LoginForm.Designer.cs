@@ -152,7 +152,7 @@ namespace V1TortoiseSVN
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(354, 158);
+            this.ClientSize = new System.Drawing.Size(344, 151);
             this.Controls.Add(this.lblIntegratedUsername);
             this.Controls.Add(this.cbIntegratedSecurity);
             this.Controls.Add(this.cbSavePassword);
@@ -171,8 +171,8 @@ namespace V1TortoiseSVN
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(360, 144);
             this.Name = "LoginForm";
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login to VersionOne";
             this.ResumeLayout(false);
             this.PerformLayout();

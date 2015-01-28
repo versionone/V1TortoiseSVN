@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.InteropServices;
 
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
@@ -7,11 +8,12 @@
 #endif
 
 [assembly: AssemblyProduct("V1TortoiseSVN")]
-[assembly: AssemblyTitle("VersionOne SDK TortoiseSVN")]
+[assembly: AssemblyTitle("VersionOne Integration for TortoiseSVN")]
 [assembly: AssemblyCompany("VersionOne, Inc.")]
-[assembly: AssemblyCopyright("Copyright 2012, VersionOne, Inc. Licensed under modified BSD.")]
+[assembly: AssemblyCopyright("Copyright 2015, VersionOne, Inc.")]
 [assembly: AssemblyVersion("1.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyInformationalVersion("12.2.1.3584 Summer '12")]
+[assembly: AssemblyInformationalVersion("")]
+[assembly: ComVisibleAttribute(false)]

@@ -15,7 +15,6 @@ namespace V1TortoiseSVN
         public WorkitemRetriever(V1Instance v1)
         {
             _v1 = v1;
-
             var workerThread = new Thread(BackgroundLoop) {IsBackground = true, Name = "Workitem Downloader Thread"};
             workerThread.Start();
         }
@@ -52,17 +51,16 @@ namespace V1TortoiseSVN
             try
             {
                 var workitems = new Dictionary<Workitem, List<Task>>();
-
                 Member currentUser = _v1.LoggedInMember;
                 var storyFilter = new PrimaryWorkitemFilter();
                 storyFilter.State.Add(State.Active);
-
                 storyFilter.Owners.Add(currentUser);
 
-                var iterationFilter = new IterationFilter();
-                iterationFilter.State.Add(IterationState.Active);
-                foreach (Iteration iteration in _v1.Get.Iterations(iterationFilter))
-                    storyFilter.Iteration.Add(iteration);
+                // 1-28-2015 AJB Commented out as limiting to iterations is too constraining. Leaving here for the time being.
+                //var iterationFilter = new IterationFilter();
+                //iterationFilter.State.Add(IterationState.Active);
+                //foreach (Iteration iteration in _v1.Get.Iterations(iterationFilter))
+                //    storyFilter.Iteration.Add(iteration);
 
                 ICollection<Workitem> ownedStories = _v1.Get.Workitems(storyFilter);
                 foreach (PrimaryWorkitem story in ownedStories)
